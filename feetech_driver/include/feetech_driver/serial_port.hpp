@@ -57,7 +57,7 @@ class SerialPort {
  private:
   [[nodiscard]] Result check_port() const noexcept;
   std::string dev_;
-  std::chrono::milliseconds timeout_ = std::chrono::milliseconds(10);
+  std::chrono::milliseconds timeout_ = std::chrono::milliseconds(200);
   LibSerial::SerialPort port_;
 };
 }  // namespace feetech_driver
