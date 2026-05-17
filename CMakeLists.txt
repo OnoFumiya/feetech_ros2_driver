@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 project(feetech_ros2_driver)
 
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 OLD)
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -40,10 +44,17 @@ add_library(${PROJECT_NAME} src/feetech_ros2_driver.cpp)
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                          $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(${PROJECT_NAME} rclcpp rclcpp_lifecycle
-                          lifecycle_msgs hardware_interface pluginlib)
-target_link_libraries(${PROJECT_NAME} communication_protocol
-                      serial_port)
+# ament_target_dependencies(${PROJECT_NAME} rclcpp rclcpp_lifecycle
+#                           lifecycle_msgs hardware_interface pluginlib)
+target_link_libraries(${PROJECT_NAME} 
+  rclcpp::rclcpp
+  rclcpp_lifecycle::rclcpp_lifecycle
+  hardware_interface::hardware_interface
+  pluginlib::pluginlib
+  ${lifecycle_msgs_TARGETS}
+  communication_protocol
+  serial_port
+)
 
 pluginlib_export_plugin_description_file(
   hardware_interface feetech_ros2_control_plugin_description.xml)
